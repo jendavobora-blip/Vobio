@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#16213e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Bulánci 2025 - Multiplayer Pillow Shooter Game by Jan Vobora">
+  <title>Bulánci 2025 - Multiplayer Game</title>
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/images/icon.svg">
+  <link rel="apple-touch-icon" href="/assets/images/icon.svg">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="/src/css/style.css">
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Načítání hry...</p>
+  </div>
+
+  <!-- Lobby Screen -->
+  <div id="lobby" class="lobby">
+    <div class="lobby-content">
+      <h1>🎮 Bulánci 2025</h1>
+      <p class="subtitle">Multiplayer Pillow Shooter Game</p>
+      
+      <div class="lobby-form">
+        <label for="playerName">Tvoje jméno:</label>
+        <input type="text" id="playerName" placeholder="Auto-generované..." maxlength="20">
+        
+        <button id="startButton" class="btn btn-primary">START GAME</button>
+      </div>
+      
+      <div class="lobby-info">
+        <h3>Ovládání:</h3>
+        <div class="controls-grid">
+          <div>
+            <strong>Desktop:</strong>
+            <ul>
+              <li>W, A, S, D - Pohyb</li>
+              <li>Myš - Míření</li>
+              <li>Klik / Mezerník - Střelba</li>
+              <li>1-5 - Změna zbraně</li>
+            </ul>
+          </div>
+          <div>
+            <strong>Mobile:</strong>
+            <ul>
+              <li>Joystick - Pohyb</li>
+              <li>Tlačítko - Střelba</li>
+              <li>Auto míření</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Canvas -->
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- HUD -->
+  <div id="hud" class="hud">
+    <!-- Health Bar -->
+    <div class="hud-section health-section">
+      <div class="health-bar">
+        <div id="healthFill" class="health-fill"></div>
+      </div>
+      <div class="health-text">HEALTH</div>
+    </div>
+
+    <!-- Weapon Info -->
+    <div class="hud-section weapon-section">
+      <div class="weapon-info">
+        <div id="weaponName" class="weapon-name">PISTOL</div>
+        <div class="weapon-ammo">
+          <span id="weaponAmmo">∞</span>
+        </div>
+      </div>
+      <div class="weapon-hint">1-5 pro změnu</div>
+    </div>
+
+    <!-- Score -->
+    <div class="hud-section score-section">
+      <div id="scoreText" class="score-text">K: 0 / D: 0</div>
+      <div class="score-label">SKÓRE</div>
+    </div>
+
+    <!-- Minimap -->
+    <div class="hud-section minimap-section">
+      <div class="minimap">
+        <div class="minimap-label">MAPA</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Controls -->
+  <div id="mobileControls" class="mobile-controls">
+    <div id="joystick" class="joystick">
+      <div class="joystick-outer">
+        <div class="joystick-inner"></div>
+      </div>
+    </div>
+    <div id="shootButton" class="shoot-button">
+      <div class="shoot-icon">🎯</div>
+    </div>
+  </div>
+
+  <!-- Chat -->
+  <div id="chatContainer" class="chat-container">
+    <div id="chatMessages" class="chat-messages"></div>
+    <form id="chatForm" class="chat-form">
+      <input type="text" id="chatInput" placeholder="Napište zprávu... (Enter)" maxlength="100">
+    </form>
+  </div>
+
+  <!-- Pause Menu -->
+  <div id="pauseMenu" class="pause-menu">
+    <div class="pause-content">
+      <h2>⏸️ PAUZA</h2>
+      <button id="resumeButton" class="btn btn-primary">POKRAČOVAT</button>
+      <div class="pause-info">
+        <p>ESC - Menu</p>
+        <p>1-5 - Změna zbraně</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/src/js/utils.js"></script>
+  <script src="/src/js/audio.js"></script>
+  <script src="/src/js/multiplayer.js"></script>
+  <script src="/src/js/game.js"></script>
+  
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(registration => {
+            console.log('Service Worker registered:', registration);
+          })
+          .catch(error => {
+            console.log('Service Worker registration failed:', error);
+          });
+      });
+    }
+  </script>
+</body>
+</html>
